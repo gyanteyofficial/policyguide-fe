@@ -16,7 +16,7 @@ export class NavbarComponent {
 
   insuranceProducts = [
     { name: 'Health Insurance', icon: '🏥', link: '/health-insurance' },
-    { name: 'Term Life Insurance', icon: '🛡️', link: '#term' },
+    { name: 'Term Life Insurance', icon: '🛡️', link: '/term-life-insurance' },
     { name: 'Car Insurance', icon: '🚗', link: '#car' },
     { name: 'Two Wheeler Insurance', icon: '🏍️', link: '#two-wheeler' },
     { name: 'Travel Insurance', icon: '✈️', link: '#travel' },
