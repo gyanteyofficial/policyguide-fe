@@ -17,16 +17,17 @@ src/
 │   ├── components/
 │   │   ├── navbar/                — Fixed top navbar with dropdowns, links to product pages
 │   │   ├── hero/                  — Auto-rotating hero banner + quote form
-│   │   ├── insurance-categories/  — Product grid (12 categories)
+│   │   ├── insurance-categories/  — Product grid (12 categories, Health & Term link to pages)
 │   │   ├── featured-plans/        — 3 featured offer cards
 │   │   ├── stats/                 — Stats banner + "Why Us" section
 │   │   ├── testimonials/          — Customer review carousel
 │   │   └── footer/                — Full footer with links + partners
 │   ├── pages/
 │   │   ├── home/                  — Home page (assembles all components)
-│   │   └── health-insurance/      — Health Insurance comparison page
+│   │   ├── health-insurance/      — Health Insurance comparison page
+│   │   └── term-life-insurance/   — Term Life Insurance comparison page
 │   ├── app.ts                     — Root component (navbar + router-outlet + footer)
-│   ├── app.routes.ts              — Routes: / → Home, /health-insurance → comparison page
+│   ├── app.routes.ts              — Routes: /, /health-insurance, /term-life-insurance
 │   └── app.config.ts              — App config with router
 ├── styles.css                     — Global styles + CSS variables (blue theme)
 └── index.html                     — Entry HTML
@@ -38,7 +39,7 @@ src/
 1. **Sticky Navbar** — Logo, Insurance Products / Renew / Claim dropdowns, Talk to Expert CTA, Sign In
 2. **Hero Section** — Auto-rotating slides (3 slides, 4.5s interval), floating trust badges, quick-quote card
 3. **Trust Bar** — IRDAI Regulated, 51+ Insurers, 10L+ Claims Settled, 24/7 Support
-4. **Insurance Categories Grid** — 12 product cards with badges, icons, starting prices, Get Quote buttons
+4. **Insurance Categories Grid** — 12 product cards; Health & Term Life cards link to comparison pages
 5. **Featured Plans** — 3 gradient cards with exclusive offers
 6. **Stats Banner** — Bold blue gradient with 4 key metrics
 7. **Why Choose Us** — Certification badges + 4 feature cards
@@ -56,8 +57,22 @@ src/
 5. **Compare Tray** — Sticky bottom bar when 1–3 plans selected, "Compare Now" CTA
 6. **Comparison Modal** — Side-by-side table comparing all features with best-value highlights
 
+### Term Life Insurance Comparison Page (`/term-life-insurance`)
+1. **Page Hero** — Blue gradient header with cover amount / age inputs + compare CTA
+2. **Filter Sidebar** — Max annual premium range slider, insurer checkboxes
+3. **Sort Bar** — Sort by Price / Cover / Claim Ratio / Rating
+4. **Plan Cards** — 6 plans (LIC, HDFC Life, ICICI Prudential, Max Life, Tata AIA, SBI Life)
+   - Shows: insurer avatar, plan name, entry age, cover amount, claim settlement ratio, policy term, rating
+   - Key features list, rider chips
+   - View Plan + Compare buttons
+5. **Compare Tray** — Sticky bottom bar when 1–3 plans selected, "Compare Now" CTA
+6. **Comparison Modal** — Side-by-side table comparing all plan features with best-value highlights
+
 ## Theme
 Blue (#1a56db primary, #1e40af dark, #eff6ff light background)
+
+## CSS Budget (angular.json)
+- anyComponentStyle warning: 16 kB, error: 32 kB (raised to accommodate rich component styles)
 
 ## Development
 ```bash

@@ -43,6 +43,12 @@
   gap: 20px;
 }
 
+a.category-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
 .category-card {
   background: white;
   border-radius: 18px;

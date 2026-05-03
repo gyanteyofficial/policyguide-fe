@@ -8,29 +8,55 @@
 
     <div class="categories-grid">
       @for (cat of visibleCategories; track cat.id) {
-        <div class="category-card" [class.popular]="cat.popular">
-          @if (cat.popular) {
-            <div class="popular-tag">⭐ Popular</div>
-          }
-          <div class="badge-wrap">
-            <span class="cat-badge badge-{{ cat.badgeColor }}">{{ cat.badge }}</span>
-          </div>
-          <div class="cat-icon-wrap">
-            <span class="cat-icon">{{ cat.icon }}</span>
-          </div>
-          <h3 class="cat-name">{{ cat.name }}</h3>
-          <p class="cat-desc">{{ cat.desc }}</p>
-          <div class="cat-footer">
-            <div class="cat-starting">
-              <span class="cat-from">Starting</span>
-              <span class="cat-price">{{ cat.starting }}</span>
+        @if (cat.link) {
+          <a class="category-card" [class.popular]="cat.popular" [routerLink]="cat.link">
+            @if (cat.popular) {
+              <div class="popular-tag">⭐ Popular</div>
+            }
+            <div class="badge-wrap">
+              <span class="cat-badge badge-{{ cat.badgeColor }}">{{ cat.badge }}</span>
             </div>
-            <button class="cat-btn">
-              Get Quote
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </button>
+            <div class="cat-icon-wrap">
+              <span class="cat-icon">{{ cat.icon }}</span>
+            </div>
+            <h3 class="cat-name">{{ cat.name }}</h3>
+            <p class="cat-desc">{{ cat.desc }}</p>
+            <div class="cat-footer">
+              <div class="cat-starting">
+                <span class="cat-from">Starting</span>
+                <span class="cat-price">{{ cat.starting }}</span>
+              </div>
+              <button class="cat-btn">
+                Compare
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
+          </a>
+        } @else {
+          <div class="category-card" [class.popular]="cat.popular">
+            @if (cat.popular) {
+              <div class="popular-tag">⭐ Popular</div>
+            }
+            <div class="badge-wrap">
+              <span class="cat-badge badge-{{ cat.badgeColor }}">{{ cat.badge }}</span>
+            </div>
+            <div class="cat-icon-wrap">
+              <span class="cat-icon">{{ cat.icon }}</span>
+            </div>
+            <h3 class="cat-name">{{ cat.name }}</h3>
+            <p class="cat-desc">{{ cat.desc }}</p>
+            <div class="cat-footer">
+              <div class="cat-starting">
+                <span class="cat-from">Starting</span>
+                <span class="cat-price">{{ cat.starting }}</span>
+              </div>
+              <button class="cat-btn">
+                Get Quote
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </button>
+            </div>
           </div>
-        </div>
+        }
       }
     </div>
 
