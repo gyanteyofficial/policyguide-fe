@@ -1,0 +1,73 @@
+<section class="testimonials-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-pill">Customer Stories</span>
+      <h2 class="section-title">Loved by Millions Across India</h2>
+      <p class="section-subtitle">Real stories from real customers who found the right insurance with PolicyGuide.</p>
+    </div>
+
+    <div class="testimonials-wrapper">
+      <button class="nav-btn prev-btn" (click)="prev()" aria-label="Previous">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+
+      <div class="testimonials-track">
+        @for (t of testimonials; track t.name; let i = $index) {
+          <div class="testimonial-card" [class.active]="i === activeIndex()" [class.prev]="i === (activeIndex() - 1 + testimonials.length) % testimonials.length" [class.next]="i === (activeIndex() + 1) % testimonials.length">
+            <div class="t-header">
+              <div class="avatar">{{ t.avatar }}</div>
+              <div class="t-info">
+                <div class="t-name">
+                  {{ t.name }}
+                  @if (t.verified) {
+                    <svg class="verified" width="16" height="16" viewBox="0 0 24 24" fill="#1a56db"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  }
+                </div>
+                <div class="t-city">📍 {{ t.city }}</div>
+              </div>
+              <div class="t-product-badge">{{ t.product }}</div>
+            </div>
+
+            <div class="t-stars">
+              @for (s of getStars(t.rating); track $index) {
+                <span class="star">⭐</span>
+              }
+            </div>
+
+            <p class="t-review">"{{ t.review }}"</p>
+          </div>
+        }
+      </div>
+
+      <button class="nav-btn next-btn" (click)="next()" aria-label="Next">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+      </button>
+    </div>
+
+    <div class="pagination-dots">
+      @for (t of testimonials; track t.name; let i = $index) {
+        <button class="pdot" [class.active]="i === activeIndex()" (click)="activeIndex.set(i)"></button>
+      }
+    </div>
+
+    <div class="rating-summary">
+      <div class="rating-item">
+        <div class="rating-score">4.8</div>
+        <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+        <div class="rating-label">App Store Rating</div>
+      </div>
+      <div class="rating-divider"></div>
+      <div class="rating-item">
+        <div class="rating-score">4.7</div>
+        <div class="rating-stars">⭐⭐⭐⭐⭐</div>
+        <div class="rating-label">Google Play Rating</div>
+      </div>
+      <div class="rating-divider"></div>
+      <div class="rating-item">
+        <div class="rating-score">10L+</div>
+        <div class="rating-stars">💬💬💬💬💬</div>
+        <div class="rating-label">Customer Reviews</div>
+      </div>
+    </div>
+  </div>
+</section>

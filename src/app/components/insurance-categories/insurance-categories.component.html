@@ -1,0 +1,49 @@
+<section class="categories-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-pill">All Products</span>
+      <h2 class="section-title">Insurance for Every Need</h2>
+      <p class="section-subtitle">Choose from 12+ insurance and investment products. Compare plans from 51+ top insurers.</p>
+    </div>
+
+    <div class="categories-grid">
+      @for (cat of visibleCategories; track cat.id) {
+        <div class="category-card" [class.popular]="cat.popular">
+          @if (cat.popular) {
+            <div class="popular-tag">⭐ Popular</div>
+          }
+          <div class="badge-wrap">
+            <span class="cat-badge badge-{{ cat.badgeColor }}">{{ cat.badge }}</span>
+          </div>
+          <div class="cat-icon-wrap">
+            <span class="cat-icon">{{ cat.icon }}</span>
+          </div>
+          <h3 class="cat-name">{{ cat.name }}</h3>
+          <p class="cat-desc">{{ cat.desc }}</p>
+          <div class="cat-footer">
+            <div class="cat-starting">
+              <span class="cat-from">Starting</span>
+              <span class="cat-price">{{ cat.starting }}</span>
+            </div>
+            <button class="cat-btn">
+              Get Quote
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+
+    <div class="view-all-wrap">
+      <button class="btn-view-all" (click)="toggleShowAll()">
+        @if (!showAll) {
+          View All Products
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        } @else {
+          Show Less
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+        }
+      </button>
+    </div>
+  </div>
+</section>

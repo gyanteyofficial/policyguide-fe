@@ -1,0 +1,162 @@
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        @for (slide of slides; track $index) {
+          @if ($index === currentSlide()) {
+            <div class="slide-content">
+              <div class="slide-badge badge-{{ slide.tagColor }}">
+                <span class="badge-dot"></span>
+                {{ slide.tag }}
+              </div>
+              <h1 class="hero-title">
+                {{ slide.subtitle }}<br>
+                <span class="hero-highlight">{{ slide.highlight }}</span>
+              </h1>
+              <p class="hero-desc">{{ slide.desc }}</p>
+
+              <div class="hero-stats">
+                <div class="hero-stat">
+                  <span class="hero-stat-value">{{ slide.stat1.value }}</span>
+                  <span class="hero-stat-label">{{ slide.stat1.label }}</span>
+                </div>
+                <div class="stat-divider"></div>
+                <div class="hero-stat">
+                  <span class="hero-stat-value">{{ slide.stat2.value }}</span>
+                  <span class="hero-stat-label">{{ slide.stat2.label }}</span>
+                </div>
+              </div>
+
+              <div class="hero-actions">
+                <button class="btn-get-quote">
+                  {{ slide.cta }}
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <button class="btn-learn-more">{{ slide.ctaSecondary }}</button>
+              </div>
+            </div>
+          }
+        }
+
+        <div class="slide-dots">
+          @for (slide of slides; track $index) {
+            <button
+              class="dot"
+              [class.active]="$index === currentSlide()"
+              (click)="goToSlide($index)"
+              [attr.aria-label]="'Slide ' + ($index + 1)"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="visual-card">
+          <div class="visual-header">
+            <div class="visual-icon">🔍</div>
+            <div>
+              <div class="visual-title">Find Your Plan</div>
+              <div class="visual-sub">Compare 51+ insurers</div>
+            </div>
+          </div>
+
+          <div class="quick-links">
+            <div class="quick-link-label">Quick Compare</div>
+            <div class="quick-links-grid">
+              <button class="quick-link active">🏥 Health</button>
+              <button class="quick-link">🛡️ Term</button>
+              <button class="quick-link">🚗 Car</button>
+              <button class="quick-link">🏍️ Bike</button>
+              <button class="quick-link">✈️ Travel</button>
+              <button class="quick-link">📈 Invest</button>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Select Plan Type</label>
+            <select>
+              <option>Individual</option>
+              <option>Family Floater</option>
+              <option>Senior Citizen</option>
+            </select>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>Age</label>
+              <input type="number" placeholder="25" min="18" max="99">
+            </div>
+            <div class="form-group">
+              <label>Cover Amount</label>
+              <select>
+                <option>₹5 Lakh</option>
+                <option>₹10 Lakh</option>
+                <option>₹25 Lakh</option>
+                <option>₹50 Lakh</option>
+                <option>₹1 Crore</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="btn-compare">
+            Compare Free Plans
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+
+          <div class="trust-badges">
+            <span class="trust-item">✅ Free</span>
+            <span class="trust-item">✅ Secure</span>
+            <span class="trust-item">✅ 2 Min</span>
+          </div>
+        </div>
+
+        <div class="floating-badge fb1">
+          <span class="fb-icon">🏆</span>
+          <div>
+            <div class="fb-value">1.5 Cr+</div>
+            <div class="fb-label">Happy Customers</div>
+          </div>
+        </div>
+        <div class="floating-badge fb2">
+          <span class="fb-icon">⚡</span>
+          <div>
+            <div class="fb-value">2 Min</div>
+            <div class="fb-label">Policy Issued</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-trust-bar">
+    <div class="container">
+      <div class="trust-bar-inner">
+        <div class="trust-bar-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span>IRDAI Regulated</span>
+        </div>
+        <div class="trust-sep">•</div>
+        <div class="trust-bar-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+          <span>51+ Insurers</span>
+        </div>
+        <div class="trust-sep">•</div>
+        <div class="trust-bar-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          <span>10 Lakh+ Claims Settled</span>
+        </div>
+        <div class="trust-sep">•</div>
+        <div class="trust-bar-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          <span>24/7 Expert Support</span>
+        </div>
+        <div class="trust-sep">•</div>
+        <div class="trust-bar-item">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1a56db" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          <span>100% Secure Payments</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

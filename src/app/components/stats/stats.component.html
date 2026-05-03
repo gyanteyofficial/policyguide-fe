@@ -1,0 +1,60 @@
+<section class="stats-section">
+  <div class="stats-banner">
+    <div class="container">
+      <div class="stats-grid">
+        @for (stat of stats; track stat.label) {
+          <div class="stat-card">
+            <div class="stat-icon">{{ stat.icon }}</div>
+            <div class="stat-value">{{ stat.value }}</div>
+            <div class="stat-label">{{ stat.label }}</div>
+            <div class="stat-sub">{{ stat.sub }}</div>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="why-section">
+    <div class="container">
+      <div class="why-grid">
+        <div class="why-text">
+          <span class="section-pill">Why PolicyGuide</span>
+          <h2 class="why-title">India's Most Trusted<br><span class="highlight">Insurance Platform</span></h2>
+          <p class="why-desc">
+            We help millions of Indians compare, buy, and manage insurance plans from India's top insurers — all in one place. Quick, easy, and completely hassle-free.
+          </p>
+          <div class="certifications">
+            <div class="cert-item">
+              <div class="cert-icon">🏛️</div>
+              <div>
+                <div class="cert-title">IRDAI Registered</div>
+                <div class="cert-sub">Insurance Broking Licence</div>
+              </div>
+            </div>
+            <div class="cert-item">
+              <div class="cert-icon">🔒</div>
+              <div>
+                <div class="cert-title">ISO 27001 Certified</div>
+                <div class="cert-sub">Data Security Standard</div>
+              </div>
+            </div>
+          </div>
+          <button class="btn-learn">
+            Learn More About Us
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="features-grid">
+          @for (feat of features; track feat.title) {
+            <div class="feature-card">
+              <div class="feature-icon">{{ feat.icon }}</div>
+              <h3 class="feature-title">{{ feat.title }}</h3>
+              <p class="feature-desc">{{ feat.desc }}</p>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

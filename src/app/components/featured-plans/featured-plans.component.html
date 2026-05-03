@@ -1,0 +1,33 @@
+<section class="featured-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-pill">Exclusive Offers</span>
+      <h2 class="section-title">Plans Designed Just for You</h2>
+      <p class="section-subtitle">Hand-picked insurance plans with exclusive benefits and discounts.</p>
+    </div>
+
+    <div class="featured-grid">
+      @for (plan of plans; track plan.type) {
+        <div class="featured-card" [style.background]="plan.gradient">
+          <div class="featured-inner">
+            <div class="featured-top">
+              <div class="featured-type">{{ plan.type }}</div>
+              <span class="featured-tag tag-{{ plan.tagColor }}">{{ plan.tag }}</span>
+            </div>
+            <div class="featured-icon">{{ plan.icon }}</div>
+            <h3 class="featured-title">{{ plan.title }}</h3>
+            <p class="featured-desc">{{ plan.desc }}</p>
+            <div class="featured-highlight">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+              {{ plan.highlight }}
+            </div>
+            <button class="featured-btn">
+              {{ plan.cta }}
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+</section>
