@@ -15,64 +15,51 @@ An Angular 21 insurance comparison web application inspired by PolicyBazaar. All
 src/
 ├── app/
 │   ├── components/
-│   │   ├── navbar/                — Fixed top navbar with dropdowns, links to product pages
-│   │   ├── hero/                  — Auto-rotating hero banner + quote form
-│   │   ├── insurance-categories/  — Product grid (12 categories, Health & Term link to pages)
-│   │   ├── featured-plans/        — 3 featured offer cards
-│   │   ├── stats/                 — Stats banner + "Why Us" section
-│   │   ├── testimonials/          — Customer review carousel
-│   │   └── footer/                — Full footer with links + partners
+│   │   ├── navbar/                   — Fixed top navbar with dropdowns, links to all product pages
+│   │   ├── hero/                     — Auto-rotating hero banner + quote form
+│   │   ├── insurance-categories/     — Product grid (12 categories, 5 linked to comparison pages)
+│   │   ├── featured-plans/           — 3 featured offer cards
+│   │   ├── stats/                    — Stats banner + "Why Us" section
+│   │   ├── testimonials/             — Customer review carousel
+│   │   └── footer/                   — Full footer with links + partners
 │   ├── pages/
-│   │   ├── home/                  — Home page (assembles all components)
-│   │   ├── health-insurance/      — Health Insurance comparison page
-│   │   └── term-life-insurance/   — Term Life Insurance comparison page
-│   ├── app.ts                     — Root component (navbar + router-outlet + footer)
-│   ├── app.routes.ts              — Routes: /, /health-insurance, /term-life-insurance
-│   └── app.config.ts              — App config with router
-├── styles.css                     — Global styles + CSS variables (blue theme)
-└── index.html                     — Entry HTML
+│   │   ├── home/                     — Home page (assembles all components)
+│   │   ├── health-insurance/         — Health Insurance comparison page (8 plans)
+│   │   ├── term-life-insurance/      — Term Life comparison page (6 plans)
+│   │   ├── car-insurance/            — Car Insurance comparison page (6 plans)
+│   │   ├── two-wheeler-insurance/    — Two Wheeler comparison page (6 plans)
+│   │   └── travel-insurance/         — Travel Insurance comparison page (6 plans)
+│   ├── app.ts                        — Root component (navbar + router-outlet + footer)
+│   ├── app.routes.ts                 — Routes for all 6 pages
+│   └── app.config.ts                 — App config with router
+├── styles.css                        — Global styles + CSS variables (blue theme)
+└── index.html                        — Entry HTML
 ```
 
-## Pages & Features
+## Pages & Routes
 
-### Home Page (`/`)
-1. **Sticky Navbar** — Logo, Insurance Products / Renew / Claim dropdowns, Talk to Expert CTA, Sign In
-2. **Hero Section** — Auto-rotating slides (3 slides, 4.5s interval), floating trust badges, quick-quote card
-3. **Trust Bar** — IRDAI Regulated, 51+ Insurers, 10L+ Claims Settled, 24/7 Support
-4. **Insurance Categories Grid** — 12 product cards; Health & Term Life cards link to comparison pages
-5. **Featured Plans** — 3 gradient cards with exclusive offers
-6. **Stats Banner** — Bold blue gradient with 4 key metrics
-7. **Why Choose Us** — Certification badges + 4 feature cards
-8. **Testimonials Carousel** — 5 verified customer reviews with navigation
-9. **Footer** — Brand info, social links, 4 link columns, 8 partner chips, legal links
+| Route | Page |
+|-------|------|
+| `/` | Home |
+| `/health-insurance` | Health Insurance comparison |
+| `/term-life-insurance` | Term Life comparison |
+| `/car-insurance` | Car Insurance comparison |
+| `/two-wheeler-insurance` | Two Wheeler comparison |
+| `/travel-insurance` | Travel Insurance comparison |
 
-### Health Insurance Comparison Page (`/health-insurance`)
-1. **Page Hero** — Blue gradient header with coverage amount / plan type / age inputs + compare CTA
-2. **Filter Sidebar** — Max premium range slider, insurer checkboxes, feature filters, claim ratio radio
-3. **Sort Bar** — Sort by Price / Rating / Hospitals / Claim Ratio
-4. **Plan Cards** — 8 plans (HDFC, Star, Niva Bupa, ICICI, Bajaj, Aditya Birla, Care, Tata AIG)
-   - Shows: insurer avatar, plan name, plan type, sum insured, network hospitals, claim ratio, rating
-   - Key benefits list, feature chips (maternity, daycare, ambulance, NCB, room rent)
-   - View Plan + Add to Compare buttons
-5. **Compare Tray** — Sticky bottom bar when 1–3 plans selected, "Compare Now" CTA
-6. **Comparison Modal** — Side-by-side table comparing all features with best-value highlights
-
-### Term Life Insurance Comparison Page (`/term-life-insurance`)
-1. **Page Hero** — Blue gradient header with cover amount / age inputs + compare CTA
-2. **Filter Sidebar** — Max annual premium range slider, insurer checkboxes
-3. **Sort Bar** — Sort by Price / Cover / Claim Ratio / Rating
-4. **Plan Cards** — 6 plans (LIC, HDFC Life, ICICI Prudential, Max Life, Tata AIA, SBI Life)
-   - Shows: insurer avatar, plan name, entry age, cover amount, claim settlement ratio, policy term, rating
-   - Key features list, rider chips
-   - View Plan + Compare buttons
-5. **Compare Tray** — Sticky bottom bar when 1–3 plans selected, "Compare Now" CTA
-6. **Comparison Modal** — Side-by-side table comparing all plan features with best-value highlights
+## Comparison Page Features (consistent across all 5 pages)
+- Blue gradient hero with product-specific quote card inputs
+- Filter sidebar with max premium range slider + insurer checkboxes
+- Sort bar (Price / product-specific metrics / Claim Ratio / Rating)
+- Plan cards: insurer avatar, plan name, key metrics, star rating, features, add-ons/riders
+- Compare tray (sticky bottom, select up to 3 plans)
+- Side-by-side comparison modal with best-value highlights
 
 ## Theme
 Blue (#1a56db primary, #1e40af dark, #eff6ff light background)
 
 ## CSS Budget (angular.json)
-- anyComponentStyle warning: 16 kB, error: 32 kB (raised to accommodate rich component styles)
+- anyComponentStyle warning: 16 kB, error: 32 kB
 
 ## Development
 ```bash
