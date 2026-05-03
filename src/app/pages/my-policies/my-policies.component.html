@@ -1,0 +1,60 @@
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="container hero-grid">
+      <div>
+        <nav class="breadcrumb">
+          <a routerLink="/">Home</a>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+          <span>My Policies</span>
+        </nav>
+        <h1>My Policies</h1>
+        <p>Track your active insurance plans, renewal dates, and claim status in one place.</p>
+      </div>
+      <div class="summary-card">
+        @for (item of renewals; track item.label) {
+          <div class="summary-row">
+            <strong>{{ item.value }}</strong>
+            <span>{{ item.label }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <div class="container content-grid">
+    <section class="card">
+      <div class="section-header">
+        <span class="section-pill">Active Plans</span>
+        <h2>Policy overview</h2>
+      </div>
+
+      <div class="policy-list">
+        @for (policy of policies; track policy.policyNo) {
+          <article class="policy-row">
+            <div class="policy-main">
+              <div class="policy-icon">{{ policy.type.slice(0, 2) }}</div>
+              <div>
+                <h3>{{ policy.type }}</h3>
+                <p>{{ policy.insurer }} · {{ policy.policyNo }}</p>
+              </div>
+            </div>
+            <div class="policy-meta">
+              <div><label>Premium</label><strong>{{ policy.premium }}</strong></div>
+              <div><label>Renewal</label><strong>{{ policy.renewal }}</strong></div>
+              <div><label>Status</label><strong class="status">{{ policy.status }}</strong></div>
+            </div>
+            <a routerLink="/support" class="policy-link">Need help?</a>
+          </article>
+        }
+      </div>
+    </section>
+
+    <section class="card actions-card">
+      <span class="section-pill">Next Steps</span>
+      <h2>Manage your insurance easily</h2>
+      <a routerLink="/health-insurance" class="btn-primary">Buy New Policy</a>
+      <a routerLink="/support" class="btn-outline">Claim Assistance</a>
+      <a routerLink="/support" class="btn-outline">Renew a Policy</a>
+    </section>
+  </div>
+</div>
