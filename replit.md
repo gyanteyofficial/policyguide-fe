@@ -15,22 +15,24 @@ An Angular 21 insurance comparison web application inspired by PolicyBazaar. All
 src/
 ├── app/
 │   ├── components/
-│   │   ├── navbar/                   — Fixed top navbar with dropdowns, links to all product pages
+│   │   ├── navbar/                   — Fixed top navbar with dropdowns; all links use routerLink
 │   │   ├── hero/                     — Auto-rotating hero banner + quote form
-│   │   ├── insurance-categories/     — Product grid (12 categories, 5 linked to comparison pages)
+│   │   ├── insurance-categories/     — Product grid (12 categories, 5 linked)
 │   │   ├── featured-plans/           — 3 featured offer cards
 │   │   ├── stats/                    — Stats banner + "Why Us" section
 │   │   ├── testimonials/             — Customer review carousel
-│   │   └── footer/                   — Full footer with links + partners
+│   │   └── footer/                   — Full footer with routerLink-wired links
 │   ├── pages/
 │   │   ├── home/                     — Home page (assembles all components)
-│   │   ├── health-insurance/         — Health Insurance comparison page (8 plans)
-│   │   ├── term-life-insurance/      — Term Life comparison page (6 plans)
-│   │   ├── car-insurance/            — Car Insurance comparison page (6 plans)
-│   │   ├── two-wheeler-insurance/    — Two Wheeler comparison page (6 plans)
-│   │   └── travel-insurance/         — Travel Insurance comparison page (6 plans)
+│   │   ├── about/                    — Full About Us page (mission, how-it-works, IRDAI cert, why-us, products, CTA)
+│   │   ├── support/                  — Full Support page (topics, FAQ accordion, contact form, offices)
+│   │   ├── health-insurance/         — Health Insurance comparison (8 plans)
+│   │   ├── term-life-insurance/      — Term Life comparison (6 plans)
+│   │   ├── car-insurance/            — Car Insurance comparison (6 plans)
+│   │   ├── two-wheeler-insurance/    — Two Wheeler comparison (6 plans)
+│   │   └── travel-insurance/         — Travel Insurance comparison (6 plans)
 │   ├── app.ts                        — Root component (navbar + router-outlet + footer)
-│   ├── app.routes.ts                 — Routes for all 6 pages
+│   ├── app.routes.ts                 — Routes for all 8 pages
 │   └── app.config.ts                 — App config with router
 ├── styles.css                        — Global styles + CSS variables (blue theme)
 └── index.html                        — Entry HTML
@@ -41,11 +43,29 @@ src/
 | Route | Page |
 |-------|------|
 | `/` | Home |
+| `/about` | About Us (full multi-section page) |
+| `/support` | Support & Contact (FAQ, form, offices) |
 | `/health-insurance` | Health Insurance comparison |
 | `/term-life-insurance` | Term Life comparison |
 | `/car-insurance` | Car Insurance comparison |
 | `/two-wheeler-insurance` | Two Wheeler comparison |
 | `/travel-insurance` | Travel Insurance comparison |
+
+## About Page Sections
+- Hero with stat grid (51+ insurers, 1.5 Cr+ customers, 5 categories, 98%+ settlement)
+- Trust bar (IRDAI, SSL, ISO 27001, Best InsureTech 2024)
+- How It Works — 3-step process
+- Mission section with IRDAI registration cert card
+- Why Us — 6 feature cards
+- Products grid — links to all 5 comparison pages
+- CTA section
+
+## Support Page Sections
+- Hero with phone/email/chat chips
+- Browse by topic — 6 help categories
+- 8-item FAQ accordion
+- Contact form with success state
+- 3 office cards (Mumbai HQ, Delhi, Bengaluru)
 
 ## Comparison Page Features (consistent across all 5 pages)
 - Blue gradient hero with product-specific quote card inputs
@@ -58,7 +78,8 @@ src/
 ## Theme
 Blue (#1a56db primary, #1e40af dark, #eff6ff light background)
 
-## CSS Budget (angular.json)
+## CSS/Bundle Budgets (angular.json)
+- initial bundle warning: 600 kB, error: 1.5 MB
 - anyComponentStyle warning: 16 kB, error: 32 kB
 
 ## Development

@@ -2,6 +2,7 @@
   <div class="hero-bg"></div>
   <div class="container">
     <div class="hero-inner">
+
       <div class="hero-content">
         @for (slide of slides; track $index) {
           @if ($index === currentSlide()) {
@@ -29,11 +30,11 @@
               </div>
 
               <div class="hero-actions">
-                <button class="btn-get-quote">
+                <button class="btn-get-quote" (click)="gotoSlideRoute(slide.route)">
                   {{ slide.cta }}
                   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </button>
-                <button class="btn-learn-more">{{ slide.ctaSecondary }}</button>
+                <button class="btn-learn-more" (click)="gotoSlideRoute(slide.route)">{{ slide.ctaSecondary }}</button>
               </div>
             </div>
           }
@@ -64,42 +65,42 @@
           <div class="quick-links">
             <div class="quick-link-label">Quick Compare</div>
             <div class="quick-links-grid">
-              <button class="quick-link active">🏥 Health</button>
-              <button class="quick-link">🛡️ Term</button>
-              <button class="quick-link">🚗 Car</button>
-              <button class="quick-link">🏍️ Bike</button>
-              <button class="quick-link">✈️ Travel</button>
-              <button class="quick-link">📈 Invest</button>
+              @for (tab of tabs; track tab.id) {
+                <button
+                  class="quick-link"
+                  [class.active]="activeTab() === tab.id"
+                  (click)="selectTab(tab.id)"
+                >
+                  {{ tab.icon }} {{ tab.label }}
+                </button>
+              }
             </div>
           </div>
 
-          <div class="form-group">
-            <label>Select Plan Type</label>
-            <select>
-              <option>Individual</option>
-              <option>Family Floater</option>
-              <option>Senior Citizen</option>
-            </select>
-          </div>
-
-          <div class="form-row">
+          @for (field of currentFields(); track field.key) {
             <div class="form-group">
-              <label>Age</label>
-              <input type="number" placeholder="25" min="18" max="99">
+              <label>{{ field.label }}</label>
+              @if (field.options) {
+                <select
+                  [value]="getFieldValue(field.key)"
+                  (change)="setFieldValue(field.key, $any($event.target).value)"
+                >
+                  @for (opt of field.options; track opt) {
+                    <option [value]="opt">{{ opt }}</option>
+                  }
+                </select>
+              } @else {
+                <input
+                  [type]="field.type ?? 'text'"
+                  [placeholder]="field.placeholder ?? ''"
+                  [value]="getFieldValue(field.key)"
+                  (input)="setFieldValue(field.key, $any($event.target).value)"
+                >
+              }
             </div>
-            <div class="form-group">
-              <label>Cover Amount</label>
-              <select>
-                <option>₹5 Lakh</option>
-                <option>₹10 Lakh</option>
-                <option>₹25 Lakh</option>
-                <option>₹50 Lakh</option>
-                <option>₹1 Crore</option>
-              </select>
-            </div>
-          </div>
+          }
 
-          <button class="btn-compare">
+          <button class="btn-compare" (click)="compareNow()">
             Compare Free Plans
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </button>
@@ -126,6 +127,7 @@
           </div>
         </div>
       </div>
+
     </div>
   </div>
 
