@@ -15,7 +15,7 @@ export class NavbarComponent {
   activeDropdown = signal<string | null>(null);
 
   insuranceProducts = [
-    { name: 'Health Insurance', icon: '🏥', link: '#health' },
+    { name: 'Health Insurance', icon: '🏥', link: '/health-insurance' },
     { name: 'Term Life Insurance', icon: '🛡️', link: '#term' },
     { name: 'Car Insurance', icon: '🚗', link: '#car' },
     { name: 'Two Wheeler Insurance', icon: '🏍️', link: '#two-wheeler' },

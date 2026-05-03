@@ -1,0 +1,426 @@
+<div class="page-wrapper">
+
+  <div class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a routerLink="/">Home</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Health Insurance</span>
+      </nav>
+      <div class="page-hero-inner">
+        <div class="page-hero-text">
+          <h1>Health Insurance Plans</h1>
+          <p>Compare {{ allPlans.length }} plans from {{ insurerList.length }} top insurers. Get the best coverage for you and your family.</p>
+          <div class="hero-stats-row">
+            <div class="hero-stat-chip">🏥 14,000+ Network Hospitals</div>
+            <div class="hero-stat-chip">✅ Up to 40% Discount</div>
+            <div class="hero-stat-chip">⚡ Instant Policy Issuance</div>
+          </div>
+        </div>
+        <div class="page-hero-form">
+          <div class="form-row">
+            <div class="form-grp">
+              <label>Coverage Amount</label>
+              <select [(ngModel)]="selectedCoverage">
+                @for (opt of coverageOptions; track opt.value) {
+                  <option [value]="opt.value">{{ opt.label }}</option>
+                }
+              </select>
+            </div>
+            <div class="form-grp">
+              <label>Plan For</label>
+              <select>
+                <option>Individual</option>
+                <option>Family (2 Adults)</option>
+                <option>Family (2+1 Child)</option>
+                <option>Family (2+2 Children)</option>
+                <option>Senior Citizen</option>
+              </select>
+            </div>
+            <div class="form-grp">
+              <label>Age (Eldest Member)</label>
+              <input type="number" placeholder="25" min="18" max="80">
+            </div>
+          </div>
+          <button class="btn-hero-search">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Compare Plans
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-content container">
+
+    <aside class="sidebar" [class.open]="showFilters()">
+      <div class="sidebar-header">
+        <span class="sidebar-title">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+          Filters
+        </span>
+        @if (activeFiltersCount() > 0) {
+          <button class="clear-btn" (click)="clearFilters()">Clear All ({{ activeFiltersCount() }})</button>
+        }
+        <button class="close-filters" (click)="showFilters.set(false)">✕</button>
+      </div>
+
+      <div class="filter-group">
+        <h4 class="filter-title">Max Annual Premium</h4>
+        <div class="premium-display">Up to {{ formatPremium(maxPremium()) }}/year</div>
+        <input
+          type="range"
+          [value]="maxPremium()"
+          min="5000"
+          max="15000"
+          step="500"
+          class="range-slider"
+          (input)="maxPremium.set(+$any($event.target).value)"
+        >
+        <div class="range-labels">
+          <span>₹5,000</span>
+          <span>₹15,000</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4 class="filter-title">Insurer</h4>
+        <div class="checkbox-list">
+          @for (insurer of insurerList; track insurer) {
+            <label class="checkbox-item" (click)="toggleInsurer(insurer)">
+              <div class="custom-check" [class.checked]="selectedInsurers().includes(insurer)">
+                @if (selectedInsurers().includes(insurer)) {
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                }
+              </div>
+              <span>{{ insurer }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4 class="filter-title">Key Features</h4>
+        <div class="checkbox-list">
+          @for (feat of featureFilters; track feat.key) {
+            <label class="checkbox-item">
+              <div class="custom-check">
+              </div>
+              <span>{{ feat.label }}</span>
+            </label>
+          }
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h4 class="filter-title">Claim Settlement Ratio</h4>
+        <div class="radio-list">
+          <label class="radio-item">
+            <input type="radio" name="csr" value="all" checked> Any
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="csr" value="95"> Above 95%
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="csr" value="98"> Above 98%
+          </label>
+          <label class="radio-item">
+            <input type="radio" name="csr" value="99"> Above 99%
+          </label>
+        </div>
+      </div>
+    </aside>
+
+    <div class="results-area">
+      <div class="results-toolbar">
+        <div class="results-count">
+          <strong>{{ sortedAndFilteredPlans().length }}</strong> plans found
+          @if (activeFiltersCount() > 0) {
+            <span class="filter-count-badge">{{ activeFiltersCount() }} filter{{ activeFiltersCount() > 1 ? 's' : '' }} applied</span>
+          }
+        </div>
+
+        <div class="toolbar-right">
+          <button class="filter-toggle-btn" (click)="showFilters.set(true)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+            Filters
+            @if (activeFiltersCount() > 0) {
+              <span class="filter-count-badge small">{{ activeFiltersCount() }}</span>
+            }
+          </button>
+
+          <div class="sort-wrap">
+            <span class="sort-label">Sort by:</span>
+            <div class="sort-chips">
+              <button class="sort-chip" [class.active]="sortBy() === 'premium'" (click)="sortBy.set('premium')">Price</button>
+              <button class="sort-chip" [class.active]="sortBy() === 'rating'" (click)="sortBy.set('rating')">Rating</button>
+              <button class="sort-chip" [class.active]="sortBy() === 'hospitals'" (click)="sortBy.set('hospitals')">Hospitals</button>
+              <button class="sort-chip" [class.active]="sortBy() === 'csr'" (click)="sortBy.set('csr')">Claim Ratio</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="plans-list">
+        @for (plan of sortedAndFilteredPlans(); track plan.id) {
+          <div class="plan-card" [class.in-compare]="isInCompare(plan.id)">
+            @if (plan.badge) {
+              <div class="plan-badge badge-{{ plan.badgeColor }}">{{ plan.badge }}</div>
+            }
+            @if (plan.popular) {
+              <div class="popular-ribbon">⭐ Popular</div>
+            }
+
+            <div class="plan-main">
+              <div class="plan-insurer">
+                <div class="insurer-avatar" [attr.data-name]="plan.insurerShort">{{ plan.insurerShort }}</div>
+                <div class="insurer-info">
+                  <div class="insurer-name">{{ plan.insurer }}</div>
+                  <div class="insurer-plan">{{ plan.planName }}</div>
+                  <div class="plan-type-chip">{{ plan.planType }}</div>
+                </div>
+              </div>
+
+              <div class="plan-metrics">
+                <div class="metric">
+                  <div class="metric-value text-blue">{{ formatCoverage(plan.coverage) }}</div>
+                  <div class="metric-label">Sum Insured</div>
+                </div>
+                <div class="metric-sep"></div>
+                <div class="metric">
+                  <div class="metric-value">{{ formatHospitals(plan.networkHospitals) }}</div>
+                  <div class="metric-label">Network Hospitals</div>
+                </div>
+                <div class="metric-sep"></div>
+                <div class="metric">
+                  <div class="metric-value text-green">{{ plan.claimSettlementRatio }}%</div>
+                  <div class="metric-label">Claim Ratio</div>
+                </div>
+                <div class="metric-sep"></div>
+                <div class="metric">
+                  <div class="metric-value">
+                    <span class="stars-row">
+                      @for (s of getStarArray(plan.rating); track $index) {
+                        <span class="star star-{{ s }}">★</span>
+                      }
+                    </span>
+                    {{ plan.rating }}
+                  </div>
+                  <div class="metric-label">{{ plan.reviewCount | number }} reviews</div>
+                </div>
+              </div>
+
+              <div class="plan-premium">
+                <div class="premium-amount">{{ formatPremium(plan.annualPremium) }}</div>
+                <div class="premium-period">/ year</div>
+                <div class="premium-monthly">{{ formatPremium(plan.monthlyPremium) }}/mo</div>
+                <button class="btn-view-plan">
+                  View Plan
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </button>
+                <button
+                  class="btn-add-compare"
+                  [class.added]="isInCompare(plan.id)"
+                  (click)="toggleCompare(plan.id)"
+                  [disabled]="compareList().length >= 3 && !isInCompare(plan.id)"
+                >
+                  @if (isInCompare(plan.id)) {
+                    ✓ Added
+                  } @else {
+                    + Compare
+                  }
+                </button>
+              </div>
+            </div>
+
+            <div class="plan-features">
+              <div class="features-label">Key Benefits</div>
+              <div class="features-list">
+                @for (feat of plan.features.slice(0,4); track feat) {
+                  <div class="feature-item">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                    {{ feat }}
+                  </div>
+                }
+              </div>
+              <div class="plan-extras">
+                @if (plan.freeHealthCheckup) {
+                  <span class="extra-chip">🩺 Free Check-up</span>
+                }
+                @if (plan.maternity) {
+                  <span class="extra-chip">👶 Maternity</span>
+                }
+                @if (plan.daycare) {
+                  <span class="extra-chip">🏥 Daycare</span>
+                }
+                @if (plan.ambulance) {
+                  <span class="extra-chip">🚑 Ambulance</span>
+                }
+                <span class="extra-chip">🔄 NCB: {{ plan.noClaimBonus }}</span>
+                <span class="extra-chip">🛋️ {{ plan.roomRent }}</span>
+              </div>
+            </div>
+          </div>
+        }
+
+        @if (sortedAndFilteredPlans().length === 0) {
+          <div class="no-results">
+            <div class="no-results-icon">🔍</div>
+            <h3>No plans match your filters</h3>
+            <p>Try adjusting your filters to see more results</p>
+            <button class="btn-clear-all" (click)="clearFilters()">Clear All Filters</button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  @if (compareList().length > 0) {
+    <div class="compare-tray">
+      <div class="container">
+        <div class="compare-tray-inner">
+          <div class="compare-tray-plans">
+            @for (plan of comparePlans(); track plan.id) {
+              <div class="tray-plan">
+                <div class="tray-plan-avatar">{{ plan.insurerShort }}</div>
+                <div class="tray-plan-info">
+                  <div class="tray-plan-name">{{ plan.insurer }}</div>
+                  <div class="tray-plan-premium">{{ formatPremium(plan.annualPremium) }}/yr</div>
+                </div>
+                <button class="tray-remove" (click)="toggleCompare(plan.id)">✕</button>
+              </div>
+            }
+            @if (compareList().length < 3) {
+              <div class="tray-empty-slot">
+                <div class="empty-slot-icon">+</div>
+                <span>Add plan</span>
+              </div>
+            }
+          </div>
+          <div class="compare-tray-actions">
+            <span class="compare-hint">{{ compareList().length }}/3 plans selected</span>
+            <button class="btn-compare-now" (click)="showCompareModal.set(true)" [disabled]="compareList().length < 2">
+              Compare Now
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </button>
+            <button class="btn-clear-compare" (click)="compareList.set([])">Clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (showCompareModal()) {
+    <div class="modal-overlay" (click)="showCompareModal.set(false)">
+      <div class="compare-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Plan Comparison</h3>
+          <button class="modal-close" (click)="showCompareModal.set(false)">✕</button>
+        </div>
+        <div class="compare-table-wrap">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th class="feature-col">Feature</th>
+                @for (plan of comparePlans(); track plan.id) {
+                  <th>
+                    <div class="compare-th-insurer">{{ plan.insurer }}</div>
+                    <div class="compare-th-plan">{{ plan.planName }}</div>
+                  </th>
+                }
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="feature-col">Annual Premium</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td class="highlight">{{ formatPremium(plan.annualPremium) }}/yr</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Sum Insured</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>{{ formatCoverage(plan.coverage) }}</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Network Hospitals</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>{{ plan.networkHospitals.toLocaleString('en-IN') }}+</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Claim Settlement Ratio</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td [class.best-value]="plan.claimSettlementRatio === maxCsr()">
+                    {{ plan.claimSettlementRatio }}%
+                    @if (plan.claimSettlementRatio === maxCsr()) {
+                      <span class="best-tag">Best</span>
+                    }
+                  </td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Room Rent</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>{{ plan.roomRent }}</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">No Claim Bonus</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>{{ plan.noClaimBonus }}</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Pre-existing Waiting</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>{{ plan.preExistingWaiting }}</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Rating</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>⭐ {{ plan.rating }}/5</td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Free Health Checkup</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td [class.yes]="plan.freeHealthCheckup" [class.no]="!plan.freeHealthCheckup">
+                    {{ plan.freeHealthCheckup ? '✓ Yes' : '✗ No' }}
+                  </td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Maternity Cover</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td [class.yes]="plan.maternity" [class.no]="!plan.maternity">
+                    {{ plan.maternity ? '✓ Yes' : '✗ No' }}
+                  </td>
+                }
+              </tr>
+              <tr>
+                <td class="feature-col">Daycare Procedures</td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td [class.yes]="plan.daycare" [class.no]="!plan.daycare">
+                    {{ plan.daycare ? '✓ Yes' : '✗ No' }}
+                  </td>
+                }
+              </tr>
+              <tr class="action-row">
+                <td class="feature-col"></td>
+                @for (plan of comparePlans(); track plan.id) {
+                  <td>
+                    <button class="btn-buy-plan">Buy Plan</button>
+                  </td>
+                }
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>
