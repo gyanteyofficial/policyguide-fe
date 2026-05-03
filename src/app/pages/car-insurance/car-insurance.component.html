@@ -1,0 +1,174 @@
+<div class="page-wrapper">
+  <div class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a routerLink="/">Home</a>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span>Car Insurance</span>
+      </nav>
+      <div class="hero-grid">
+        <div>
+          <h1>Car Insurance Plans</h1>
+          <p>Compare comprehensive motor insurance plans from top insurers and find the best cover for your car at the lowest premium.</p>
+          <div class="hero-pills">
+            <span>Zero Depreciation</span>
+            <span>Cashless Repairs</span>
+            <span>24x7 Roadside Help</span>
+          </div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-row">
+            <label>Vehicle Type</label>
+            <select>
+              <option>Private Car</option>
+              <option>SUV</option>
+              <option>Sedan</option>
+            </select>
+          </div>
+          <div class="hero-card-row">
+            <label>Registration Year</label>
+            <input type="number" placeholder="2022">
+          </div>
+          <button class="btn-primary full">Compare Car Plans</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container layout">
+    <aside class="sidebar" [class.open]="showFilters()">
+      <div class="sidebar-header">
+        <h3>Filters</h3>
+        <button class="close-btn" (click)="showFilters.set(false)">✕</button>
+      </div>
+      <div class="filter-group">
+        <h4>Max Premium</h4>
+        <div class="premium-value">Up to {{ formatPremium(maxPremium()) }}/year</div>
+        <input type="range" min="5000" max="10000" step="250" [value]="maxPremium()" (input)="maxPremium.set(+$any($event.target).value)">
+      </div>
+      <div class="filter-group">
+        <h4>Insurer</h4>
+        @for (insurer of insurerList; track insurer) {
+          <label class="check-item">
+            <input type="checkbox" [checked]="selectedInsurers().includes(insurer)" (change)="toggleInsurer(insurer)">
+            <span>{{ insurer }}</span>
+          </label>
+        }
+      </div>
+      <button class="btn-secondary full" (click)="clearFilters()">Clear Filters</button>
+    </aside>
+
+    <main class="results">
+      <div class="toolbar">
+        <div><strong>{{ sortedPlans().length }}</strong> plans found</div>
+        <div class="toolbar-actions">
+          <button class="filter-btn" (click)="showFilters.set(true)">Filters</button>
+          <div class="sort-group">
+            <span>Sort by:</span>
+            <button [class.active]="sortBy() === 'premium'" (click)="sortBy.set('premium')">Price</button>
+            <button [class.active]="sortBy() === 'idv'" (click)="sortBy.set('idv')">IDV</button>
+            <button [class.active]="sortBy() === 'claim'" (click)="sortBy.set('claim')">Claim Ratio</button>
+            <button [class.active]="sortBy() === 'rating'" (click)="sortBy.set('rating')">Rating</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="cards">
+        @for (plan of sortedPlans(); track plan.id) {
+          <article class="plan-card" [class.selected]="isInCompare(plan.id)">
+            @if (plan.badge) { <span class="badge badge-{{ plan.badgeColor }}">{{ plan.badge }}</span> }
+            <div class="plan-head">
+              <div class="insurer-avatar">{{ plan.insurerShort }}</div>
+              <div>
+                <h3>{{ plan.insurer }}</h3>
+                <p>{{ plan.planName }}</p>
+                <span class="sub-chip">Cashless: {{ plan.cashlessGarages }}</span>
+              </div>
+              <div class="price-box">
+                <div class="price">{{ formatPremium(plan.annualPremium) }}</div>
+                <small>/ year</small>
+              </div>
+            </div>
+
+            <div class="stats-row">
+              <div><strong>{{ formatIdv(plan.idv) }}</strong><span>IDV</span></div>
+              <div><strong>{{ plan.cashlessGarages }}</strong><span>Garages</span></div>
+              <div><strong>{{ plan.claimSettlementRatio }}%</strong><span>Claim Ratio</span></div>
+            </div>
+
+            <div class="stars">
+              @for (s of starArray(plan.rating); track $index) {
+                <span class="star {{ s }}">★</span>
+              }
+              <strong>{{ plan.rating }}</strong>
+              <span class="muted">({{ plan.reviewCount.toLocaleString('en-IN') }})</span>
+            </div>
+
+            <div class="features">
+              @for (feat of plan.features; track feat) {
+                <span>✓ {{ feat }}</span>
+              }
+            </div>
+
+            <div class="riders">
+              @for (addon of plan.addOns; track addon) { <span>{{ addon }}</span> }
+            </div>
+
+            <div class="actions">
+              <button class="btn-primary">View Plan</button>
+              <button class="btn-secondary" (click)="toggleCompare(plan.id)">{{ isInCompare(plan.id) ? '✓ Added' : '+ Compare' }}</button>
+            </div>
+          </article>
+        }
+      </div>
+    </main>
+  </div>
+
+  @if (compareList().length > 0) {
+    <div class="compare-tray">
+      <div class="container compare-tray-inner">
+        <div class="tray-plans">
+          @for (plan of comparePlans(); track plan.id) {
+            <div class="tray-item">
+              <div class="tray-avatar">{{ plan.insurerShort }}</div>
+              <div>
+                <strong>{{ plan.insurer }}</strong>
+                <span>{{ formatPremium(plan.annualPremium) }}/yr</span>
+              </div>
+              <button (click)="toggleCompare(plan.id)">✕</button>
+            </div>
+          }
+        </div>
+        <button class="btn-primary" [disabled]="compareList().length < 2" (click)="showCompareModal.set(true)">Compare Now</button>
+      </div>
+    </div>
+  }
+
+  @if (showCompareModal()) {
+    <div class="modal-overlay" (click)="showCompareModal.set(false)">
+      <div class="compare-modal" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Car Insurance Comparison</h3>
+          <button (click)="showCompareModal.set(false)">✕</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Feature</th>
+                @for (plan of comparePlans(); track plan.id) { <th>{{ plan.insurer }}</th> }
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Annual Premium</td>@for (plan of comparePlans(); track plan.id) { <td>{{ formatPremium(plan.annualPremium) }}</td> }</tr>
+              <tr><td>IDV</td>@for (plan of comparePlans(); track plan.id) { <td>{{ formatIdv(plan.idv) }}</td> }</tr>
+              <tr><td>Claim Settlement Ratio</td>@for (plan of comparePlans(); track plan.id) { <td [class.best]="plan.claimSettlementRatio === bestClaim()">{{ plan.claimSettlementRatio }}%</td> }</tr>
+              <tr><td>Cashless Garages</td>@for (plan of comparePlans(); track plan.id) { <td>{{ plan.cashlessGarages }}</td> }</tr>
+              <tr><td>Rating</td>@for (plan of comparePlans(); track plan.id) { <td>★ {{ plan.rating }}/5</td> }</tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  }
+</div>
